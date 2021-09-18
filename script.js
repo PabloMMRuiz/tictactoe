@@ -72,6 +72,16 @@ const gameStarter = (()=>{
 function playerModule(player){
     const pla = document.querySelector(player);
 
+    function _getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+      
+
     function formMaker(){
         const form = document.createElement("div");
         form.classList.add("playerForm")
@@ -91,6 +101,14 @@ function playerModule(player){
         const playerSymbolSpace = document.createElement("input");
         playerSymbolSpace.placeholder = "Write one character...";
         form.appendChild(playerSymbolSpace);
+
+        const playerColor = document.createElement("button");
+        playerColor.textContent = "Change colour";
+        playerColor.addEventListener("click", function(){
+            playerColor.style.backgroundColor = _getRandomColor();
+        } );
+        form.appendChild(playerColor);
+
 
         const sumbitButton = document.createElement("button");
         sumbitButton.textContent = "Ready!";
@@ -113,17 +131,22 @@ function playerModule(player){
             }
             else{
                 if(player == "#P1"){
-                    P1 = new playerMaker(playerNameSpace.value, playerSymbolSpace.value, "red");
+                    let color = playerColor.style.backgroundColor;
+                    P1 = new playerMaker(playerNameSpace.value, playerSymbolSpace.value, color);
                     pla.innerHTML = ""
                     playerInfo(pla, P1);
                     gameStarter.setFormCount();
+                    playerName.style.borderBottomColor = color;
+
                     return;
                 }
                 else if (player == "#P2"){
-                    P2 = new playerMaker(playerNameSpace.value, playerSymbolSpace.value, "blue");
+                    let color = playerColor.style.backgroundColor;
+                    P2 = new playerMaker(playerNameSpace.value, playerSymbolSpace.value, color);
                     pla.innerHTML = ""
                     playerInfo(pla, P2);
                     gameStarter.setFormCount();
+                    playerName.style.borderColor = color;
                     return;
 
 
@@ -286,7 +309,7 @@ const gameManager = (()=>{
 
             const player = document.querySelector("#P2");
             const playerScore = player.querySelector("#playerscore")
-            playerScore.textContent = `Score: ${P1.score}`;
+            playerScore.textContent = `Score: ${P2.score}`;
 
 
         }
